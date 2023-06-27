@@ -32,7 +32,7 @@ func (s *SliceUtil) Append(element interface{}, args ...interface{}) SliceUtil {
 	return (*s)
 }
 
-// Delete 按照元素本身来删除元素 
+// Delete 按照元素本身来删除元素
 func (s *SliceUtil) Delete(i int) SliceUtil {
 
 	if s.Elements == nil || len(s.Elements) == 0 {
@@ -119,7 +119,7 @@ func (s SliceUtil) AllMatch(judge func(item interface{}) bool) bool {
 	return true
 }
 
-// -1表示找不到，否则返回index  
+// -1表示找不到，否则返回index
 func (s *SliceUtil) findFirst(toFindElement interface{}) int {
 
 	for i, element := range s.Elements {
@@ -154,23 +154,3 @@ func (s SliceUtil) TakeWhile(callback func(ele interface{}) bool) []interface{} 
 	return result
 
 }
-
-//func main() {
-//	var intS SliceUtil
-//	// SliceUtil结构体的field仅仅包括[]interface{}类型的elements
-//	intS.Elements = []interface{}{1, 2, 3, 100, 200}
-//
-//	fmt.Println("------------------------------------")
-//	fmt.Println(intS.TakeWhile(func(ele interface{}) bool {
-//		// 一般都是同一类型的数据，这里是int类型
-//		return ele.(int) > 2
-//	}))
-//
-//	// filter会对s本身就行操作，takewhile方法只是返回满足条件的元素
-//	intS.Filter(func(element interface{}) bool {
-//		return element.(int) >= 100
-//	}).Foreach(func(index int, item interface{}) {
-//		fmt.Println(item)
-//	})
-//
-//}
