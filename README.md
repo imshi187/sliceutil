@@ -1,9 +1,16 @@
 # sliceutil
+
 golang sliceutil, including methods like TakeWhile, Filter, ForEach and so on, which were inpired by js
 
-
-
 # examples
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/imshi187/sliceutil"
+)
 
 func main() {
 	var s sliceutil.SliceUtil
@@ -44,7 +51,8 @@ func main() {
 
 }
 
-
+```
 
 # install
-import github.com/imshi187/sliceutil.git
+
+import github.com/imshi187/sliceutil
