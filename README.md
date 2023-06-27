@@ -1,7 +1,9 @@
 # sliceutil
 golang sliceutil, including methods like TakeWhile, Filter, ForEach and so on, which were inpired from js
 
-// test
+
+
+# code
 func main() {
 	var intS SliceUtil
 	// SliceUtil结构体的field仅仅包括[]interface{}类型的elements
