@@ -3,7 +3,8 @@ golang sliceutil, including methods like TakeWhile, Filter, ForEach and so on, w
 
 
 
-# code
+# examples
+
 func main() {
 	var s sliceutil.SliceUtil
 	s.Elements = []interface{}{}
