@@ -4,21 +4,45 @@ golang sliceutil, including methods like TakeWhile, Filter, ForEach and so on, w
 
 
 # code
-	var intS SliceUtil
-	// SliceUtil结构体的field仅仅包括[]interface{}类型的elements
-	intS.elements = []interface{}{1, 2, 3, 100, 200}
+	
+func main() {
+	var s sliceutil.SliceUtil
+	s.Elements = []interface{}{}
+	// append an element
+	s.Append(1, 100, 200, 3000) //1 100 200 3000
 
-	fmt.Println("------------------------------------")
-	fmt.Println(intS.TakeWhile(func(ele interface{}) bool {
-		// 一般都是同一类型的数据，这里是int类型
-		return ele.(int) > 2
-	}))
+	// 遍历每一个元素
+	s.Foreach(func(index int, item interface{}) {
+		fmt.Print(item, " ")
+	})
 
-	// filter会对slice本身进行操作，takewhile方法只是返回满足条件的元素
-	intS.Filter(func(element interface{}) bool {
-		return element.(int) >= 100
+	fmt.Println()
+	s.MapTo(func(item interface{}) interface{} {
+		return item.(int) - 1
+	}).Foreach(func(index int, item interface{}) {
+		fmt.Print(item, " ")
+	}) //0 99 199 2999
+
+	fmt.Println()
+	fmt.Println(s.Where(99)) //1
+
+	s.Modify(1, 666).Foreach(func(index int, item interface{}) {
+		fmt.Print(item, " ")
+	}) //0 666 199 2999
+
+	allGreater := s.AllMatch(func(item interface{}) bool {
+		// if all elements are greater than 1
+		return item.(int) >= 1
+	})
+	fmt.Println(allGreater) //false
+
+	s.Filter(func(item interface{}) bool {
+		return item.(int) <= 0
 	}).Foreach(func(index int, item interface{}) {
 		fmt.Println(item)
-	})
+	}) //only 0
+
+}
+
 # install
 import github.com/imshi187/sliceutil.git
