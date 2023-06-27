@@ -20,3 +20,5 @@ golang sliceutil, including methods like TakeWhile, Filter, ForEach and so on, w
 	}).Foreach(func(index int, item interface{}) {
 		fmt.Println(item)
 	})
+# install
+import github.com/imshi187/sliceutil.git
