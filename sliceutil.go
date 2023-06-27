@@ -1,14 +1,12 @@
 package sliceutil
 
-import "fmt"
-
 // SliceUtil slice结构体
 type SliceUtil struct {
 	// interface{}代表任何类型
 	Elements []interface{}
 }
 
-// HasElement 是否有某个元素
+// HasElement 判断是否有某个元素,成功返回true,否则返回false
 func (s SliceUtil) HasElement(element interface{}) bool {
 	for _, v := range s.Elements {
 		// 找到元素
@@ -19,12 +17,12 @@ func (s SliceUtil) HasElement(element interface{}) bool {
 	return false
 }
 
-// Length 返回长度
+// Length 返回元素个数
 func (s SliceUtil) Length() int {
 	return len(s.Elements)
 }
 
-// Add 增加元素
+// Add 增加元素, 可以一次性增加多个
 func (s *SliceUtil) Append(element interface{}, args ...interface{}) SliceUtil {
 
 	s.Elements = append(s.Elements, element)
@@ -34,7 +32,7 @@ func (s *SliceUtil) Append(element interface{}, args ...interface{}) SliceUtil {
 	return (*s)
 }
 
-// Delete 按照元素本身来删除元素 (尚未成功)
+// Delete 按照元素本身来删除元素 
 func (s *SliceUtil) Delete(i int) SliceUtil {
 
 	if s.Elements == nil || len(s.Elements) == 0 {
@@ -50,14 +48,14 @@ func (s *SliceUtil) Delete(i int) SliceUtil {
 	return (*s)
 }
 
-// modify
-func (s *SliceUtil) Modify(index int, element interface{}) SliceUtil {
-	s.Elements[index] = element
+// 将指定位置的元素修改为新元素
+func (s *SliceUtil) Modify(index int, newElement interface{}) SliceUtil {
+	s.Elements[index] = newElement
 
 	return (*s)
 }
 
-// Where 查找到element所在的index
+// Where 查找到element所在的index,如果找不到返回-1
 func (s SliceUtil) Where(toFindElement interface{}) int {
 	for i, element := range s.Elements {
 		//找到所在元素
@@ -68,20 +66,19 @@ func (s SliceUtil) Where(toFindElement interface{}) int {
 	return -1
 }
 
-// 找到元素 by index
-// 索引由用户自己判断
+// 通过index找到元素;，其中索引由用户自己判断
 func (s SliceUtil) FindByIndex(index int) interface{} {
 	return s.Elements[index]
 }
 
-// Foreach foreach成功实现
+// Foreach 遍历每个元素，在回调函数内对元素进行操作, 可以参考js的forEach
 func (s SliceUtil) Foreach(callback func(index int, item interface{})) {
 	for index, element := range s.Elements {
 		callback(index, element)
 	}
 }
 
-// Filter filter: 就行操作时需要类型断言，比如ele1.(string)
+// Filter filter: 进行操作时需要类型断言，比如ele1.(string)
 // filter是对元素本身就行了操作
 func (s SliceUtil) Filter(condition func(item interface{}) bool) SliceUtil {
 	// 这样可以chain invoke
@@ -97,7 +94,12 @@ func (s SliceUtil) Filter(condition func(item interface{}) bool) SliceUtil {
 	return s1
 }
 
-// MapTo 将每一个元素映射
+// MapTo 将每一个元素映进行射，
+//
+//	slice1.MapTo(func(item interface{}){
+//			return item.(int)*10;
+//	})
+
 func (s SliceUtil) MapTo(callback func(item interface{}) interface{}) SliceUtil {
 	s.Foreach(func(currentIndex int, eachElement interface{}) {
 		// 对每一个元素就行重新赋值
@@ -106,7 +108,7 @@ func (s SliceUtil) MapTo(callback func(item interface{}) interface{}) SliceUtil 
 	return s
 }
 
-// AllSatisfied 判断每个元素是否都满足条件
+// AllSatisfied 判断每个元素是否都满足条件, 是，返回true; 否则返回false
 func (s SliceUtil) AllMatch(judge func(item interface{}) bool) bool {
 	for _, element := range s.Elements {
 		// 如果有元素不满足条件，立刻返回
@@ -117,7 +119,7 @@ func (s SliceUtil) AllMatch(judge func(item interface{}) bool) bool {
 	return true
 }
 
-// -1表示找不到，否则返回index
+// -1表示找不到，否则返回index  
 func (s *SliceUtil) findFirst(toFindElement interface{}) int {
 
 	for i, element := range s.Elements {
@@ -139,7 +141,7 @@ func (s *SliceUtil) findLast(element interface{}) int {
 	return -1
 }
 
-// 返回满足条件的所有元素,不对原来的切片就行操作
+// 返回满足条件的所有元素,不对原来的切片进行操作
 func (s SliceUtil) TakeWhile(callback func(ele interface{}) bool) []interface{} {
 	result := make([]interface{}, 0)
 	s.Foreach(func(index int, item interface{}) {
@@ -153,22 +155,22 @@ func (s SliceUtil) TakeWhile(callback func(ele interface{}) bool) []interface{} 
 
 }
 
-func main() {
-	var intS SliceUtil
-	// SliceUtil结构体的field仅仅包括[]interface{}类型的elements
-	intS.Elements = []interface{}{1, 2, 3, 100, 200}
-
-	fmt.Println("------------------------------------")
-	fmt.Println(intS.TakeWhile(func(ele interface{}) bool {
-		// 一般都是同一类型的数据，这里是int类型
-		return ele.(int) > 2
-	}))
-
-	// filter会对s本身就行操作，takewhile方法只是返回满足条件的元素
-	intS.Filter(func(element interface{}) bool {
-		return element.(int) >= 100
-	}).Foreach(func(index int, item interface{}) {
-		fmt.Println(item)
-	})
-
-}
+//func main() {
+//	var intS SliceUtil
+//	// SliceUtil结构体的field仅仅包括[]interface{}类型的elements
+//	intS.Elements = []interface{}{1, 2, 3, 100, 200}
+//
+//	fmt.Println("------------------------------------")
+//	fmt.Println(intS.TakeWhile(func(ele interface{}) bool {
+//		// 一般都是同一类型的数据，这里是int类型
+//		return ele.(int) > 2
+//	}))
+//
+//	// filter会对s本身就行操作，takewhile方法只是返回满足条件的元素
+//	intS.Filter(func(element interface{}) bool {
+//		return element.(int) >= 100
+//	}).Foreach(func(index int, item interface{}) {
+//		fmt.Println(item)
+//	})
+//
+//}
