@@ -15,7 +15,7 @@ func main() {
 		return ele.(int) > 2
 	}))
 
-	// filter会对s本身就行操作，takewhile方法只是返回满足条件的元素
+	// filter会对slice本身进行操作，takewhile方法只是返回满足条件的元素
 	intS.Filter(func(element interface{}) bool {
 		return element.(int) >= 100
 	}).Foreach(func(index int, item interface{}) {
