@@ -4,7 +4,6 @@ golang sliceutil, including methods like TakeWhile, Filter, ForEach and so on, w
 
 
 # code
-func main() {
 	var intS SliceUtil
 	// SliceUtil结构体的field仅仅包括[]interface{}类型的elements
 	intS.elements = []interface{}{1, 2, 3, 100, 200}
@@ -21,5 +20,3 @@ func main() {
 	}).Foreach(func(index int, item interface{}) {
 		fmt.Println(item)
 	})
-
-}
